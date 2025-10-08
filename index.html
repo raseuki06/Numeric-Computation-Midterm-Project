@@ -4,67 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Metode Regula Falsi</title>
+
+    <!-- Menghubungkan ke file CSS eksternal untuk mengatur tampilan -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Container utama kalkulator -->
     <div class="calculator-container">
         <h1>Kalkulator Metode Regula Falsi</h1>
         
+        <!-- Form input untuk memasukkan data Regula Falsi -->
         <form id="regulaFalsiForm">
+            
+            <!-- Input fungsi f(x) -->
             <div class="input-group">
                 <label for="function">Fungsi f(x):</label>
+                <!-- Input teks fungsi, contoh default: x**3 - x - 1 -->
                 <input type="text" id="function" value="x**3 - x - 1" required>
-                <small>Gunakan sintaks JavaScript, misal: Math.cos(x) - x atau x**2 - 4</small>
+                <small>
+                    Gunakan sintaks JavaScript, misal: Math.cos(x) - x atau x**2 - 4
+                </small>
             </div>
             
+            <!-- Input batas bawah (a) dan batas atas (b) ditampilkan sejajar -->
             <div class="inline-inputs">
                 <div class="input-group">
                     <label for="a">Batas Bawah (a):</label>
+                    <!-- Input numerik untuk batas bawah -->
                     <input type="number" id="a" value="1" step="any" required>
                 </div>
                 <div class="input-group">
                     <label for="b">Batas Atas (b):</label>
+                    <!-- Input numerik untuk batas atas -->
                     <input type="number" id="b" value="2" step="any" required>
                 </div>
             </div>
 
+            <!-- Input toleransi error dan iterasi maksimal -->
             <div class="inline-inputs">
                 <div class="input-group">
                     <label for="tolerance">Toleransi Error (ε):</label>
+                    <!-- Input nilai toleransi galat -->
                     <input type="number" id="tolerance" value="0.0001" step="any" required>
                 </div>
                 <div class="input-group">
                     <label for="maxIterations">Iterasi Maksimal:</label>
+                    <!-- Input batas jumlah iterasi -->
                     <input type="number" id="maxIterations" value="50" required>
                 </div>
             </div>
             
+            <!-- Tombol untuk menjalankan perhitungan Regula Falsi -->
             <button type="submit">Hitung Akar</button>
         </form>
 
+        <!-- Bagian output hasil dan tabel iterasi -->
         <div id="output">
+            <!-- Menampilkan pesan error jika terjadi kesalahan -->
             <div id="error" class="error"></div>
+
+            <!-- Judul hasil akhir -->
             <h3 id="result-title" class="hidden">Hasil:</h3>
+            <!-- Paragraf untuk menampilkan hasil akhir akar -->
             <p id="result"></p>
+
+            <!-- Judul tabel iterasi -->
             <h3 id="table-title" class="hidden">Langkah Iterasi:</h3>
+
+            <!-- Tabel untuk menampilkan hasil tiap iterasi -->
             <div class="table-wrapper">
                 <table id="iterationsTable">
                     <thead>
                         <tr>
-                            <th>Iter</th>
-                            <th>a</th>
-                            <th>b</th>
-                            <th>c</th>
-                            <th>f(c)</th>
+                            <th>Iter</th> <!-- Nomor iterasi -->
+                            <th>a</th>     <!-- Batas bawah a -->
+                            <th>b</th>     <!-- Batas atas b -->
+                            <th>c</th>     <!-- Titik potong hasil rumus Regula Falsi -->
+                            <th>f(c)</th>  <!-- Nilai fungsi di titik c -->
                         </tr>
                     </thead>
                     <tbody id="iterationsBody">
+                        <!-- Isi tabel akan di-generate oleh JavaScript -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Menghubungkan ke file JavaScript eksternal -->
     <script src="script.js"></script>
 </body>
 </html>
