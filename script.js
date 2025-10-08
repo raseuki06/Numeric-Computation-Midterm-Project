@@ -1,241 +1,158 @@
+// ================================================================
+//  SCRIPT: Kalkulator Metode Regula Falsi
+//  Penulis: (Nama kamu / tim)
+//  Deskripsi: File ini berisi logika utama untuk menghitung akar
+//             suatu fungsi menggunakan metode Regula Falsi.
+// ================================================================
+
+// Menambahkan event listener pada form agar ketika tombol submit ditekan,
+// proses tidak langsung me-refresh halaman (default behavior form HTML)
 document.getElementById('regulaFalsiForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Mencegah form reload halaman
+    event.preventDefault(); // Mencegah form melakukan reload halaman
 
-    // Ambil elemen DOM
-    const funcStr = document.getElementById('function').value;
-    const aVal = document.getElementById('a').value;
-    const bVal = document.getElementById('b').value;
-    const tolVal = document.getElementById('tolerance').value;
-    const maxIterVal = document.getElementById('maxIterations').value;
+    // ============================================================
+    // AMBIL ELEMEN DARI HTML (Input dan Output)
+    // ============================================================
+    const funcStr = document.getElementById('function').value;      // String fungsi f(x)
+    const aVal = document.getElementById('a').value;                // Nilai batas bawah
+    const bVal = document.getElementById('b').value;                // Nilai batas atas
+    const tolVal = document.getElementById('tolerance').value;      // Nilai toleransi
+    const maxIterVal = document.getElementById('maxIterations').value; // Iterasi maksimal
 
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('error');
-    const iterationsBody = document.getElementById('iterationsBody');
-    const resultTitle = document.getElementById('result-title');
-    const tableTitle = document.getElementById('table-title');
+    const resultDiv = document.getElementById('result');            // Area hasil akar
+    const errorDiv = document.getElementById('error');              // Area pesan error
+    const iterationsBody = document.getElementById('iterationsBody'); // Tabel iterasi
+    const resultTitle = document.getElementById('result-title');    // Judul hasil
+    const tableTitle = document.getElementById('table-title');      // Judul tabel iterasi
 
-    // Reset output dari proses sebelumnya
-    resultDiv.innerHTML = '';
-    errorDiv.style.display = 'none';
-    iterationsBody.innerHTML = '';
-    resultTitle.classList.add('hidden');
-    tableTitle.classList.add('hidden');
-    
-    // Logika utama akan ditambahkan di sini oleh anggota berikutnya
-    console.log("Form submitted!");
-    console.log("Fungsi:", funcStr);
-    console.log("a:", aVal, "b:", bVal);
-    console.log("Toleransi:", tolVal, "Max Iterasi:", maxIterVal);
-});
+    // ============================================================
+    // RESET OUTPUT DARI PROSES SEBELUMNYA
+    // ============================================================
+    resultDiv.innerHTML = '';                   // Kosongkan hasil sebelumnya
+    errorDiv.style.display = 'none';            // Sembunyikan pesan error
+    iterationsBody.innerHTML = '';              // Kosongkan isi tabel iterasi
+    resultTitle.classList.add('hidden');        // Sembunyikan judul hasil
+    tableTitle.classList.add('hidden');         // Sembunyikan judul tabel
 
-
-
-document.getElementById('regulaFalsiForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const funcStr = document.getElementById('function').value;
-    const aVal = document.getElementById('a').value;
-    const bVal = document.getElementById('b').value;
-    const tolVal = document.getElementById('tolerance').value;
-    const maxIterVal = document.getElementById('maxIterations').value;
-
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('error');
-    const iterationsBody = document.getElementById('iterationsBody');
-    const resultTitle = document.getElementById('result-title');
-    const tableTitle = document.getElementById('table-title');
-
-    resultDiv.innerHTML = '';
-    errorDiv.style.display = 'none';
-    iterationsBody.innerHTML = '';
-    resultTitle.classList.add('hidden');
-    tableTitle.classList.add('hidden');
-
+    // ============================================================
+    // VALIDASI INPUT AWAL
+    // ============================================================
     if (!funcStr || !aVal || !bVal || !tolVal || !maxIterVal) {
         showError("Semua kolom input harus diisi.");
-        return;
+        return; // Hentikan eksekusi
     }
-    
+
+    // Konversi string input menjadi tipe numerik
+    // Gunakan 'let' agar nilai a dan b bisa diubah selama iterasi
     let a = parseFloat(aVal);
     let b = parseFloat(bVal);
     const tolerance = parseFloat(tolVal);
     const maxIterations = parseInt(maxIterVal);
 
-    const showError = (message) => {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        console.error(message);
-    };
-
+    // Cek apakah semua input valid berupa angka
     if (isNaN(a) || isNaN(b) || isNaN(tolerance) || isNaN(maxIterations)) {
         showError("Input a, b, toleransi, dan iterasi harus berupa angka.");
         return;
     }
 
-    const f = (x) => {
-        try {
-            return new Function('x', 'Math', return ${funcStr})(x, Math);
-        } catch (e) {
-            throw new Error(Sintaks fungsi salah: "${funcStr}". Periksa kembali penulisan Anda.);
-        }
-    };
+    // ============================================================
+    // FUNGSI HELPER UNTUK ERROR DAN FUNGSI f(x)
+    // ============================================================
 
-    // --- Logika Utama Regula Falsi ---
-    try {
-        let fa = f(a);
-        let fb = f(b);
-
-        if (isNaN(fa) || isNaN(fb)) {
-             throw new Error("Fungsi menghasilkan nilai non-numerik (NaN). Cek domain fungsi.");
-        }
-
-        if (fa * fb >= 0) {
-            throw new Error(f(a) dan f(b) harus memiliki tanda berlawanan. Saat ini: f(${a})=${fa.toFixed(4)} dan f(${b})=${fb.toFixed(4)}.);
-        }
-
-        let c = a; 
-        for (let i = 0; i < maxIterations; i++) {
-            fa = f(a);
-            fb = f(b);
-
-            c = (a * fb - b * fa) / (fb - fa);
-            let fc = f(c);
-            
-            if (isNaN(c) || !isFinite(c)) {
-                throw new Error("Terjadi kesalahan perhitungan (division by zero atau NaN). Cek interval Anda.");
-            }
-
-            // Bagian tabel akan ditambahkan oleh Anggota 6
-
-            if (Math.abs(fc) < tolerance) {
-                resultTitle.classList.remove('hidden');
-                resultDiv.innerHTML = Akar ditemukan: <strong>${c.toFixed(6)}</strong>;
-                return; // Selesai
-            }
-
-            if (fa * fc < 0) {
-                b = c;
-            } else {
-                a = c;
-            }
-        }
-        
-        throw new Error(Solusi tidak konvergen dalam ${maxIterations} iterasi. Perkiraan akar terakhir: ${c.toFixed(6)});
-
-    } catch (e) {
-        showError(e.message);
-    }
-});
-
-document.getElementById('regulaFalsiForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Mencegah form reload halaman
-
-    // Ambil elemen DOM
-    const funcStr = document.getElementById('function').value;
-    const aVal = document.getElementById('a').value;
-    const bVal = document.getElementById('b').value;
-    const tolVal = document.getElementById('tolerance').value;
-    const maxIterVal = document.getElementById('maxIterations').value;
-
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('error');
-    const iterationsBody = document.getElementById('iterationsBody');
-    const resultTitle = document.getElementById('result-title');
-    const tableTitle = document.getElementById('table-title');
-
-    // Reset output dari proses sebelumnya
-    resultDiv.innerHTML = '';
-    errorDiv.style.display = 'none';
-    iterationsBody.innerHTML = '';
-    resultTitle.classList.add('hidden');
-    tableTitle.classList.add('hidden');
-
-    // --- Validasi Input Awal ---
-    if (!funcStr || !aVal || !bVal || !tolVal || !maxIterVal) {
-        showError("Semua kolom input harus diisi.");
-        return;
-    }
-    
-    // 🔥 PERBAIKAN UTAMA ADA DI SINI: Gunakan 'let' bukan 'const' untuk a dan b
-    let a = parseFloat(aVal);
-    let b = parseFloat(bVal);
-    const tolerance = parseFloat(tolVal);
-    const maxIterations = parseInt(maxIterVal);
-
-    if (isNaN(a) || isNaN(b) || isNaN(tolerance) || isNaN(maxIterations)) {
-        showError("Input a, b, toleransi, dan iterasi harus berupa angka.");
-        return;
-    }
-
-    // --- Fungsi Helper ---
+    // Fungsi untuk menampilkan pesan error
     const showError = (message) => {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        console.error(message);
+        errorDiv.textContent = message;  // Tulis pesan error
+        errorDiv.style.display = 'block'; // Tampilkan error ke user
+        console.error(message);          // Log error di console
     };
 
+    // Fungsi untuk mengevaluasi string fungsi f(x)
+    // Menggunakan constructor Function() agar user bisa menulis Math.sin(x), Math.pow(x), dll
     const f = (x) => {
         try {
-            return new Function('x', 'Math', return ${funcStr})(x, Math);
+            // Membuat fungsi baru berdasarkan string yang dimasukkan user
+            return new Function('x', 'Math', `return ${funcStr}`)(x, Math);
         } catch (e) {
-            throw new Error(Sintaks fungsi salah: "${funcStr}". Periksa kembali penulisan Anda.);
+            // Jika fungsi tidak valid, tampilkan pesan kesalahan
+            throw new Error(`Sintaks fungsi salah: "${funcStr}". Periksa kembali penulisan Anda.`);
         }
     };
 
-    // --- Logika Utama Regula Falsi ---
+    // ============================================================
+    // LOGIKA UTAMA METODE REGULA FALSI
+    // ============================================================
     try {
+        // Hitung nilai awal fungsi di titik a dan b
         let fa = f(a);
         let fb = f(b);
 
+        // Cek apakah hasil fungsi valid
         if (isNaN(fa) || isNaN(fb)) {
              throw new Error("Fungsi menghasilkan nilai non-numerik (NaN). Cek domain fungsi.");
         }
 
+        // Syarat Regula Falsi: f(a) dan f(b) harus memiliki tanda berlawanan
         if (fa * fb >= 0) {
-            throw new Error(f(a) dan f(b) harus memiliki tanda berlawanan. Saat ini: f(${a})=${fa.toFixed(4)} dan f(${b})=${fb.toFixed(4)}.);
+            throw new Error(`f(a) dan f(b) harus memiliki tanda berlawanan. Saat ini: f(${a})=${fa.toFixed(4)} dan f(${b})=${fb.toFixed(4)}.`);
         }
 
-        tableTitle.classList.remove('hidden'); // Tampilkan judul tabel
-        let c = a; 
+        // Tampilkan judul tabel iterasi
+        tableTitle.classList.remove('hidden');
+
+        let c = a; // Inisialisasi titik tengah (c) awal
+
+        // ====================================================
+        // PERULANGAN UTAMA ITERASI REGULA FALSI
+        // ====================================================
         for (let i = 0; i < maxIterations; i++) {
+            // Hitung nilai fungsi pada batas a dan b terkini
             fa = f(a);
             fb = f(b);
 
+            // Rumus Regula Falsi:
+            // c = (a * f(b) - b * f(a)) / (f(b) - f(a))
             c = (a * fb - b * fa) / (fb - fa);
             let fc = f(c);
 
+            // Validasi jika c tidak valid
             if (isNaN(c) || !isFinite(c)) {
                 throw new Error("Terjadi kesalahan perhitungan (division by zero atau NaN). Cek interval Anda.");
             }
 
-            // PENAMBAHAN: Membuat dan mengisi baris tabel
-            const newRow = iterationsBody.insertRow();
+            // ====================================================
+            // TAMBAHKAN DATA ITERASI KE TABEL HTML
+            // ====================================================
+            const newRow = iterationsBody.insertRow(); // Tambahkan baris baru di tabel
             newRow.innerHTML = `
-                <td>${i + 1}</td>
-                <td>${a.toFixed(6)}</td>
-                <td>${b.toFixed(6)}</td>
-                <td>${c.toFixed(6)}</td>
-                <td>${fc.toFixed(6)}</td>
+                <td>${i + 1}</td>               <!-- Nomor iterasi -->
+                <td>${a.toFixed(6)}</td>         <!-- Nilai a -->
+                <td>${b.toFixed(6)}</td>         <!-- Nilai b -->
+                <td>${c.toFixed(6)}</td>         <!-- Nilai c -->
+                <td>${fc.toFixed(6)}</td>        <!-- Nilai f(c) -->
             `;
 
+            // Jika nilai f(c) sudah cukup kecil (mendekati nol), maka akar ditemukan
             if (Math.abs(fc) < tolerance) {
-                resultTitle.classList.remove('hidden');
-                resultDiv.innerHTML = Akar ditemukan: <strong>${c.toFixed(6)}</strong>;
-                newRow.style.backgroundColor = '#d4edda'; // Tandai baris solusi
-                return;
+                resultTitle.classList.remove('hidden'); // Tampilkan judul hasil
+                resultDiv.innerHTML = `Akar ditemukan: <strong>${c.toFixed(6)}</strong>`;
+                newRow.style.backgroundColor = '#d4edda'; // Tandai baris solusi dengan warna hijau muda
+                return; // Hentikan iterasi
             }
 
-            // Di sinilah 'a' atau 'b' diubah nilainya, sehingga harus 'let'
+            // Update batas bawah dan atas
+            // Jika tanda f(a)*f(c) negatif, akar ada di antara a dan c → ganti b = c
             if (fa * fc < 0) {
                 b = c;
             } else {
-                a = c;
+                a = c; // Jika tidak, akar di antara c dan b → ganti a = c
             }
         }
         
-        throw new Error(Solusi tidak konvergen dalam ${maxIterations} iterasi. Perkiraan akar terakhir: ${c.toFixed(6)});
+        // Jika loop selesai tanpa menemukan akar, tampilkan pesan gagal konvergen
+        throw new Error(`Solusi tidak konvergen dalam ${maxIterations} iterasi. Perkiraan akar terakhir: ${c.toFixed(6)}`);
 
     } catch (e) {
+        // Tangani semua error di sini
         showError(e.message);
     }
 });
