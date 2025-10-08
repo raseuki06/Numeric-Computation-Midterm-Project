@@ -1,56 +1,76 @@
+/* ============================================================
+   STYLE.CSS — Kalkulator Metode Regula Falsi
+   Deskripsi: Mengatur tampilan antarmuka aplikasi Regula Falsi
+   ============================================================ */
+
+/* ====== STYLE DASAR HALAMAN ====== */
 body {
+    /* Gunakan font modern dan responsif */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Warna latar belakang lembut */
     background-color: #f4f7f9;
+    /* Warna teks utama */
     color: #333;
+    /* Posisikan konten di tengah layar (horizontal & vertikal) */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Tinggi minimum layar penuh */
     min-height: 100vh;
+    /* Jarak dalam dari sisi layar */
     padding: 20px;
+    /* Hilangkan margin bawaan */
     margin: 0;
 }
 
+/* ====== KONTAINER UTAMA KALKULATOR ====== */
 .calculator-container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    background-color: #ffffff;         /* Warna putih bersih */
+    padding: 30px;                     /* Ruang di dalam kotak */
+    border-radius: 12px;               /* Sudut membulat */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+    width: 100%;                       /* Lebar penuh (maks 700px) */
     max-width: 700px;
 }
 
+/* ====== JUDUL UTAMA ====== */
 h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 25px;
+    text-align: center;                /* Pusatkan teks */
+    color: #2c3e50;                    /* Warna biru tua elegan */
+    margin-bottom: 25px;               /* Jarak ke bawah */
 }
 
+/* ====== GRUP INPUT (LABEL + INPUT) ====== */
 .input-group {
-    margin-bottom: 18px;
+    margin-bottom: 18px;               /* Jarak antar grup input */
 }
 
+/* Label input (misalnya "Fungsi f(x):") */
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
+    display: block;                    /* Agar muncul di atas input */
+    margin-bottom: 8px;                /* Jarak antara label dan input */
+    font-weight: 600;                  /* Tebal sedang */
+    color: #555;                       /* Abu-abu lembut */
 }
 
+/* Input teks atau angka */
 .input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.2s;
+    width: 100%;                       /* Lebar penuh kotak input */
+    padding: 12px;                     /* Ruang dalam input */
+    border: 1px solid #ccc;            /* Garis pinggir abu-abu muda */
+    border-radius: 6px;                /* Sudut agak membulat */
+    font-size: 16px;                   /* Ukuran teks input */
+    box-sizing: border-box;            /* Padding tidak menambah lebar total */
+    transition: border-color 0.2s;     /* Animasi halus saat fokus */
 }
 
+/* Warna border berubah saat input aktif */
 .input-group input:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #007bff;             /* Biru terang (warna tema utama) */
 }
 
+/* Catatan kecil di bawah input (misalnya "Gunakan sintaks JavaScript") */
 .input-group small {
     display: block;
     margin-top: 5px;
@@ -58,88 +78,101 @@ h1 {
     font-size: 12px;
 }
 
+/* ====== TATA LETAK INPUT SEJAJAR (A dan B, atau Toleransi dan Iterasi) ====== */
 .inline-inputs {
-    display: flex;
-    gap: 20px;
+    display: flex;                     /* Tampilkan input secara sejajar */
+    gap: 20px;                         /* Jarak antar kolom */
 }
 
+/* Setiap grup dalam baris mendapat lebar sama */
 .inline-inputs .input-group {
     flex: 1;
 }
 
+/* ====== TOMBOL "HITUNG AKAR" ====== */
 button {
-    width: 100%;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(45deg, #007bff, #0056b3);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s;
+    width: 100%;                       /* Tombol lebar penuh */
+    padding: 15px;                     /* Tinggi tombol */
+    font-size: 18px;                   /* Ukuran teks besar */
+    font-weight: bold;                 /* Teks tebal */
+    color: #fff;                       /* Warna teks putih */
+    background: linear-gradient(45deg, #007bff, #0056b3); /* Gradasi biru */
+    border: none;                      /* Hilangkan border default */
+    border-radius: 6px;                /* Sudut membulat */
+    cursor: pointer;                   /* Tangan saat diarahkan */
+    transition: background 0.3s;       /* Efek hover halus */
     margin-top: 10px;
 }
 
+/* Efek hover pada tombol */
 button:hover {
-    background: linear-gradient(45deg, #0056b3, #007bff);
+    background: linear-gradient(45deg, #0056b3, #007bff); /* Balik gradasi */
 }
 
+/* ====== BAGIAN OUTPUT HASIL ====== */
 #output {
-    margin-top: 25px;
+    margin-top: 25px;                  /* Jarak dari form */
 }
 
+/* Teks hasil akhir akar */
 #result {
-    font-size: 20px;
-    font-weight: bold;
-    color: #28a745;
-    text-align: center;
-    background-color: #e9f5ec;
-    padding: 15px;
-    border-radius: 6px;
-    border-left: 5px solid #28a745;
+    font-size: 20px;                   /* Ukuran besar */
+    font-weight: bold;                 /* Teks tebal */
+    color: #28a745;                    /* Warna hijau (berhasil) */
+    text-align: center;                /* Pusatkan teks */
+    background-color: #e9f5ec;         /* Latar hijau muda */
+    padding: 15px;                     /* Ruang dalam */
+    border-radius: 6px;                /* Sudut membulat */
+    border-left: 5px solid #28a745;    /* Garis kiri hijau */
 }
 
+/* ====== PESAN ERROR ====== */
 .error {
-    color: #d93025;
-    background-color: #f8d7da;
-    padding: 12px;
-    border-radius: 6px;
-    border-left: 5px solid #d93025;
-    margin-bottom: 15px;
-    display: none; /* Sembunyi secara default */
+    color: #d93025;                    /* Teks merah */
+    background-color: #f8d7da;         /* Latar merah muda */
+    padding: 12px;                     /* Ruang dalam */
+    border-radius: 6px;                /* Sudut membulat */
+    border-left: 5px solid #d93025;    /* Garis kiri merah */
+    margin-bottom: 15px;               /* Jarak ke bawah */
+    display: none;                     /* Disembunyikan secara default */
 }
 
+/* ====== WRAPPER UNTUK TABEL ITERASI ====== */
 .table-wrapper {
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: 300px;                 /* Batasi tinggi agar bisa scroll */
+    overflow-y: auto;                  /* Scroll vertikal jika tabel panjang */
     margin-top: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd;            /* Garis tepi tipis */
     border-radius: 6px;
 }
 
+/* ====== TABEL ITERASI ====== */
 table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%;                       /* Lebar penuh */
+    border-collapse: collapse;         /* Hilangkan jarak antar sel */
 }
 
+/* Sel header dan isi tabel */
 th, td {
-    padding: 12px;
-    text-align: right;
-    border-bottom: 1px solid #ddd;
+    padding: 12px;                     /* Ruang dalam sel */
+    text-align: right;                 /* Rata kanan untuk angka */
+    border-bottom: 1px solid #ddd;     /* Garis bawah antar baris */
 }
 
+/* Header tabel */
 th {
-    background-color: #f2f2f2;
-    font-weight: 600;
-    position: sticky;
+    background-color: #f2f2f2;         /* Latar abu-abu muda */
+    font-weight: 600;                  /* Teks agak tebal */
+    position: sticky;                  /* Header tetap di atas saat scroll */
     top: 0;
 }
 
+/* Baris genap tabel diberi warna berbeda (efek zebra) */
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
+/* ====== KELAS UNTUK MENYEMBUNYIKAN ELEMEN ====== */
 .hidden {
     display: none;
 }
