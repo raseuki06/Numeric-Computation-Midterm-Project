@@ -28,6 +28,8 @@ document.getElementById('regulaFalsiForm').addEventListener('submit', function(e
     console.log("Toleransi:", tolVal, "Max Iterasi:", maxIterVal);
 });
 
+
+
 document.getElementById('regulaFalsiForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
